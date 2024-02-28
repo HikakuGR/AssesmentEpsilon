@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssesmentEpsilon", "AssesmentEpsilon\AssesmentEpsilon\AssesmentEpsilon.csproj", "{EE89F3B5-9E0D-4462-AD82-56953CC90967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssesmentEpsilon.Client", "AssesmentEpsilon\AssesmentEpsilon.Client\AssesmentEpsilon.Client.csproj", "{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE89F3B5-9E0D-4462-AD82-56953CC90967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE89F3B5-9E0D-4462-AD82-56953CC90967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE89F3B5-9E0D-4462-AD82-56953CC90967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE89F3B5-9E0D-4462-AD82-56953CC90967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58AC6373-4AB7-4EC4-B779-2E09E7A5EA24}
+	EndGlobalSection
+EndGlobal
