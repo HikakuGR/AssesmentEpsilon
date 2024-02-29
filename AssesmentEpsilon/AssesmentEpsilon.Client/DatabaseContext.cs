@@ -7,7 +7,7 @@ namespace AssesmentEpsilon
         public DbSet<Customer> Customers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=master;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;TrustServerCertificate=True;Database=master;User Id=sa;Password=12345;");
         }
     }
 }
