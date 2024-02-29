@@ -1,11 +1,12 @@
 ﻿@page "/"
+@using BlazorApp.Shared
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject HttpClient httpClient
 <PageTitle>Home</PageTitle>
 
 <h1>Customers</h1>
 
-<QuickGrid Items="Customers.AsQueryable()" Pagination="pagination">
+<QuickGrid ItemsProvider="customersProvider"  Pagination="pagination">
     <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
     <PropertyColumn Property="c=>c.ContactName" Sortable="true"></PropertyColumn>
     <PropertyColumn Property="c=>c.City" Sortable="true"></PropertyColumn>
@@ -31,10 +32,19 @@
 
     PaginationState pagination = new() { ItemsPerPage=5 };
     List<Customer> Customers = new();
+    GridItemsProvider<Customer>? customersProvider;
     protected override async Task OnInitializedAsync()
     {
-        var result = await httpClient.GetAsync("api/customer");
-        var response = await result.Content.ReadFromJsonAsync<List<Customer>>();
-        Customers = response!;
+        customersProvider = async req =>
+        {
+            var response = await httpClient.GetFromJsonAsync<CustomerResponse>($"api/customer/{req.StartIndex}/{req.Count}");
+           // var result = await httpClient.GetAsync($"api/customer/{req.StartIndex}/{req.Count}");
+            //var response = await result.Content.ReadFromJsonAsync<CustomerResponse>();
+            
+            return GridItemsProviderResult.From(items: response.Customers, totalItemCount: response.Count);
+        };
+        // var result = await httpClient.GetAsync("api/customer");
+        // var response = await result.Content.ReadFromJsonAsync<List<Customer>>();
+        // Customers = response!;
     }
 }

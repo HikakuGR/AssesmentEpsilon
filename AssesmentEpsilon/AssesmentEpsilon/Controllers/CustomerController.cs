@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlazorApp.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssesmentEpsilon.Controllers
@@ -13,10 +14,19 @@ namespace AssesmentEpsilon.Controllers
         {
             _databaseContext = databaseContext;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<Customer>>> Get()  => await _databaseContext.Customers.ToListAsync();  
+        //[HttpGet]
+        //public async Task<ActionResult<List<Customer>>> Get()  => await _databaseContext.Customers.ToListAsync();
+        [HttpGet("{skip}/{take}")]
+        public async Task<ActionResult<CustomerResponse>> GetCustomers(int skip,int take) {
+
+            //_databaseContext.Database.EnsureCreated();  
+            var count = await _databaseContext.Customers.CountAsync();
+            var customers = await _databaseContext.Customers!.Skip(skip).Take(take).ToListAsync(); 
+            return Ok(new CustomerResponse(customers,count));
+        }
         public IActionResult Index()
         {
+
             return View();
         }
     }
