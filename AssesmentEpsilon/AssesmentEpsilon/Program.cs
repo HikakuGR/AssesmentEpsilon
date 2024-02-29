@@ -31,6 +31,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
+    //.AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(AssesmentEpsilon.Client._Imports).Assembly);
 app.MapControllers();

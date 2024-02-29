@@ -1,7 +1,40 @@
 ﻿@page "/"
-
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject HttpClient httpClient
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Customers</h1>
 
-Welcome to your new app.
+<QuickGrid Items="Customers.AsQueryable()" Pagination="pagination">
+    <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
+    <PropertyColumn Property="c=>c.ContactName" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.City" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.PostalCode" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Address" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.CompanyName" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Country" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Phone" Sortable="true"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Region" Sortable="true">
+        <ColumnOptions>
+            <input type="number" />
+        </ColumnOptions>
+    </PropertyColumn>
+    <TemplateColumn Title="Action">
+        <button class="btn-none bg-white border-0"><span class="oi oi-trash text-danger"></span></button>
+    </TemplateColumn>
+
+</QuickGrid>
+
+<Paginator State="@pagination"></Paginator>
+
+@code {
+
+    PaginationState pagination = new() { ItemsPerPage=5 };
+    List<Customer> Customers = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await httpClient.GetAsync("api/customer");
+        var response = await result.Content.ReadFromJsonAsync<List<Customer>>();
+        Customers = response!;
+    }
+}
