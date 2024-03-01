@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssesmentEpsilon", "Assesme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssesmentEpsilon.Client", "AssesmentEpsilon\AssesmentEpsilon.Client\AssesmentEpsilon.Client.csproj", "{B0C4405D-AEBA-4D76-A8B3-2D1FEC9F02FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Shared", "BlazorApp.Shared\BlazorApp.Shared.csproj", "{484CEC91-7507-492F-98BA-7B13D5DD32BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Shared", "BlazorApp.Shared\BlazorApp.Shared.csproj", "{484CEC91-7507-492F-98BA-7B13D5DD32BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

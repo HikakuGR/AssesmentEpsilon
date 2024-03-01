@@ -1,6 +1,7 @@
 using AssesmentEpsilon;
 using AssesmentEpsilon.Client.Pages;
 using AssesmentEpsilon.Components;
+using AssesmentEpsilon.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DatabaseContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
+
+//builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var app = builder.Build();
 
@@ -34,6 +37,7 @@ app.MapRazorComponents<App>()
     //.AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(AssesmentEpsilon.Client._Imports).Assembly);
+
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())

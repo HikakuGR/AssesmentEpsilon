@@ -2,10 +2,34 @@
 @using BlazorApp.Shared
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@* @inject ICustomerService customerService *@
 <PageTitle>Home</PageTitle>
 
 <h1>Customers</h1>
+@* <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <EditForm Model="customer" OnSubmit="AddCustomer" Enhance>
+                        <div class="hstack gap-2">
+                            <label class="label-control">FullName</label>
+                            <InputText @bind-Value="customer.ContactName" class="form-control"></InputText>
+                            <label class="label-control">Phone</label>
+                            <InputText @bind-Value="customer.Phone" class="form-control"></InputText>
+                            <button type="submit" class="btn-link btn-primary">Save</button>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="card-body">
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
 <QuickGrid ItemsProvider="customersProvider"  Pagination="pagination">
     <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
     <PropertyColumn Property="c=>c.ContactName" Sortable="true"></PropertyColumn>
@@ -20,31 +44,47 @@
             <input type="number" />
         </ColumnOptions>
     </PropertyColumn>
-    <TemplateColumn Title="Action">
-        <button class="btn-none bg-white border-0"><span class="oi oi-trash text-danger"></span></button>
+    <TemplateColumn Title="Action">        
+        <button class="btn btn-primary" @onclick=@(()=>EditCustomer(context.Id))>Edit</button>
+        <button class="btn btn-danger" @onclick=@(()=>DeleteCustomer(context.Id))>Delete</button>        
     </TemplateColumn>
-
+    
 </QuickGrid>
-
+<button class="btn btn-primary" @onclick="AddCustomer">Add new Customer</button>
 <Paginator State="@pagination"></Paginator>
 
 @code {
 
     PaginationState pagination = new() { ItemsPerPage=5 };
+    Customer  customer = new();
     List<Customer> Customers = new();
     GridItemsProvider<Customer>? customersProvider;
     protected override async Task OnInitializedAsync()
     {
         customersProvider = async req =>
-        {
+        {            
             var response = await httpClient.GetFromJsonAsync<CustomerResponse>($"api/customer/{req.StartIndex}/{req.Count}");
-           // var result = await httpClient.GetAsync($"api/customer/{req.StartIndex}/{req.Count}");
-            //var response = await result.Content.ReadFromJsonAsync<CustomerResponse>();
-            
             return GridItemsProviderResult.From(items: response.Customers, totalItemCount: response.Count);
         };
         // var result = await httpClient.GetAsync("api/customer");
         // var response = await result.Content.ReadFromJsonAsync<List<Customer>>();
         // Customers = response!;
     }
+    void EditCustomer(Guid id)
+    {
+        NavigationManager.NavigateTo($"edit-customer/{id}");
+    }
+
+    async Task AddCustomer()
+    {
+        NavigationManager.NavigateTo("edit-customer");
+        var response = await httpClient.PostAsJsonAsync<Customer>("api/customer/create",customer);
+    }
+
+    async Task DeleteCustomer(Guid id)
+    {
+        await httpClient.DeleteAsync($"api/customer/{id}");   
+    }
+
+
 }
