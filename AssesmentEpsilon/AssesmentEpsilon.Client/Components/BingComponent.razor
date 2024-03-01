@@ -1,0 +1,23 @@
+﻿@inject HttpClient httpClient
+<div>
+    <div>
+        CurrentCounterValue in MyFirstComponent is @CurrentCounterValueParameter
+    </div>
+    @* 
+    <button onclick="@(()=>SearchBing)" class="btn btn-primary">Search Bing</button>
+    <h3>BingAutoSuggest:</h3>
+    @bingInput *@
+</div>
+
+@code {
+    [Parameter]
+    public int? CurrentCounterValueParameter { get; set; }
+
+    public string? response { get; set; }
+    
+    async Task SearchBing()
+    {
+         var result = await httpClient.GetAsync($"http://dev.virtualearth.net/REST/v1/Autosuggest?query=<user_prefix>&userLocation=<lat,long,confidence_radius>&userCircularMapView=<lat,long,radius>&userMapView=<nw_lat,nw_long,se_lat,se_long>&maxResults=<max_results>&includeEntityTypes=<Place,Address,Business>&culture=<culture_code>&userRegion=<country_code>&countryFilter=<country_code_or_none>&key=<BingMapKey>");
+          response= await result.Content.ReadAsStringAsync();
+    }
+}

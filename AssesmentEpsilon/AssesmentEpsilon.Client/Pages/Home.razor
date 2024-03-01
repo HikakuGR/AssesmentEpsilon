@@ -7,43 +7,17 @@
 <PageTitle>Home</PageTitle>
 
 <h1>Customers</h1>
-@* <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <EditForm Model="customer" OnSubmit="AddCustomer" Enhance>
-                        <div class="hstack gap-2">
-                            <label class="label-control">FullName</label>
-                            <InputText @bind-Value="customer.ContactName" class="form-control"></InputText>
-                            <label class="label-control">Phone</label>
-                            <InputText @bind-Value="customer.Phone" class="form-control"></InputText>
-                            <button type="submit" class="btn-link btn-primary">Save</button>
-                        </div>
-                    </EditForm>
-                </div>
-                <div class="card-body">
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
- *@
 <QuickGrid ItemsProvider="customersProvider"  Pagination="pagination">
     <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
-    <PropertyColumn Property="c=>c.ContactName" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.City" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.PostalCode" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.Address" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.CompanyName" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.Country" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.Phone" Sortable="true"></PropertyColumn>
-    <PropertyColumn Property="c=>c.Region" Sortable="true">
-        <ColumnOptions>
-            <input type="number" />
-        </ColumnOptions>
-    </PropertyColumn>
+    <PropertyColumn Property="c=>c.ContactName" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.City" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.PostalCode" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.Address" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.CompanyName" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.Country" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.Phone" ></PropertyColumn>
+    <PropertyColumn Property="c=>c.Region" ></PropertyColumn>
     <TemplateColumn Title="Action">        
         <button class="btn btn-primary" @onclick=@(()=>EditCustomer(context.Id))>Edit</button>
         <button class="btn btn-danger" @onclick=@(()=>DeleteCustomer(context.Id))>Delete</button>        
@@ -55,7 +29,7 @@
 
 @code {
 
-    PaginationState pagination = new() { ItemsPerPage=5 };
+    PaginationState pagination = new() { ItemsPerPage=10 };
     Customer  customer = new();
     List<Customer> Customers = new();
     GridItemsProvider<Customer>? customersProvider;

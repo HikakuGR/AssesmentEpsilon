@@ -16,6 +16,42 @@ else
         <label for="title">Name</label>
         <InputText id="Name" @bind-Value=customer.ContactName class="form-control" />
     </div>
+    <div>
+        <label for="title">Address</label>
+        <InputText id="Address" @bind-Value=customer.Address class="form-control" />
+    </div>
+
+    <div>
+        <label for="title">PostalCode</label>
+        <InputText id="PostalCode" @bind-Value=customer.PostalCode class="form-control" />
+    </div>
+
+    <div>
+        <label for="title">Country</label>
+        <InputText id="Country" @bind-Value=customer.Country class="form-control" />
+    </div>
+
+    <div>
+        <label for="title">CompanyName</label>
+        <InputText id="CompanyName" @bind-Value=customer.CompanyName class="form-control" />
+    </div>
+    
+    <div>
+        <label for="title">Phone</label>
+        <InputText id="Phone" @bind-Value=customer.Phone class="form-control" />
+    </div>
+    
+    <div>
+        <label for="title">Region</label>
+        <InputText id="Region" @bind-Value=customer.Region class="form-control" />
+    </div>
+    
+    <div>
+        <label for="title">City</label>
+        <InputText id="City" @bind-Value=customer.City class="form-control" />
+    </div>
+    
+
     <button type="submit" class="btn btn-primary">Save</button>
 </EditForm>
 @code {

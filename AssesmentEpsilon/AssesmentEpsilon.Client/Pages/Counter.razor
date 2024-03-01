@@ -1,12 +1,14 @@
 ﻿@page "/counter"
 
-<PageTitle>Counter</PageTitle>
+<InputText id="Input" @bind-Value=@myInput class="form-control"></InputText>
+<BingComponent CurrentCounterValueParameter="@CurrentCounterValue"></BingComponent>
+<SecondComponent CurrentCounterValue=@currentCount></SecondComponent>
 
-<h1>Counter</h1>
+
 
 <p role="status">Current count: @currentCount</p>
-
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
 
 @code {
     private int currentCount = 0;
@@ -14,5 +16,10 @@
     private void IncrementCount()
     {
         currentCount++;
+        CurrentCounterValue = currentCount;
     }
+
+    public int CurrentCounterValue { get; set; }
+    public string myInput { get; set; }
+
 }
