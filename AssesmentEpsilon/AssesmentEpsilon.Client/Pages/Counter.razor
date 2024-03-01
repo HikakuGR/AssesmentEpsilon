@@ -1,8 +1,7 @@
 ﻿@page "/counter"
 
 <InputText id="Input" @bind-Value=@myInput class="form-control"></InputText>
-<BingComponent CurrentCounterValueParameter="@CurrentCounterValue"></BingComponent>
-<SecondComponent CurrentCounterValue=@currentCount></SecondComponent>
+<BingComponent bingInputParameter="@myInput"></BingComponent>
 
 
 
