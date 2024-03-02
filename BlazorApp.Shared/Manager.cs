@@ -8,6 +8,6 @@ namespace BlazorApp.Shared
 {
     public class Manager:IPerson
     {
-        public string? Name { get; set; }
+        public string? Name { get; set; } = "Manager Name";
     }
 }

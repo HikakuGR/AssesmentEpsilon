@@ -1,0 +1,29 @@
+﻿@page "/PrintName"
+@using BlazorApp.Shared
+@inject HttpClient Http
+<PageTitle>Print Name</PageTitle>
+
+<InputText id="EmpolyeeName" @bind-Value=employee.Name class="form-control" />
+<button @onclick="@(()=>ShowName(employee))">Show Employee Name</button>
+<InputText id="ManagerName" @bind-Value=manager.Name class="form-control" />
+<button @onclick="@(()=>ShowName(manager))">Show Manager Name</button>
+
+
+<div>@name</div>
+
+
+@code {
+    private Employee employee=new();
+    private Manager manager=new ();
+    private string? name { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+    }
+    void ShowName(IPerson personName)
+    {
+        name = personName.Name;
+    }    
+}
