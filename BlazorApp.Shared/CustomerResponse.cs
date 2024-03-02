@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 namespace BlazorApp.Shared
 {
     public record struct  CustomerResponse(List<Customer> Customers,int Count);
-    
+
 }

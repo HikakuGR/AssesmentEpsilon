@@ -1,4 +1,5 @@
-﻿using BlazorApp.Shared;
+﻿using AssesmentEpsilon.Services;
+using BlazorApp.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,78 +8,54 @@ namespace AssesmentEpsilon.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : Controller
-    {
-        private readonly DatabaseContext _databaseContext;
+    {        
+        private readonly ICustomerService _customerService;
 
-        public CustomerController(DatabaseContext databaseContext)
+        public CustomerController(ICustomerService customerService)
         {
-            _databaseContext = databaseContext;
+            _customerService = customerService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Customer>>> Get() => await _databaseContext.Customers.ToListAsync();
+        public async Task<ActionResult<List<Customer>>> Get() => await _customerService.GetAll();
 
 
         [HttpGet("{skip}/{take}")]
         public async Task<ActionResult<CustomerResponse>> GetCustomers(int skip, int take)
-        {
-
-            //_databaseContext.Database.EnsureCreated();  
-            var count = await _databaseContext.Customers.CountAsync();
-            var customers = await _databaseContext.Customers!.Skip(skip).Take(take).ToListAsync();
-            return Ok(new CustomerResponse(customers, count));
+        {                       
+            return  Ok(await _customerService.GetPaged(skip,take));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomerByIdAsync(Guid id)
         {
-            var result = await _databaseContext.Customers.FindAsync(id);
+            var result = await _customerService.Get(id);
             if (result == null)
                 return NotFound("Customer Not Found");
 
             return Ok(result);
         }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCustomerAsync(Guid id)
         {
-            var result = await _databaseContext.Customers.FindAsync(id);
-            if (result == null)
-                return NotFound("Customer Not Found");
-
-            _databaseContext.Remove(result);
-            await _databaseContext.SaveChangesAsync();
-
+            await _customerService.Remove(id);   
             return Ok();
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Customer>> UpdateCustomerAsync(Guid id, Customer customer)
         {
-            var dbCustomer = await _databaseContext.Customers.FindAsync(id);
-            if (dbCustomer == null)
+            var result = await _customerService.Update(id, customer);
+            if (result == null)
                 return NotFound("Customer Not Found");
-
-            dbCustomer.ContactName = customer.ContactName;
-            dbCustomer.CompanyName = customer.CompanyName;
-            dbCustomer.Phone = customer.Phone;
-            dbCustomer.City = customer.City;
-            dbCustomer.Address = customer.Address;
-            dbCustomer.Country = customer.Country;
-            dbCustomer.PostalCode = customer.PostalCode;
-            dbCustomer.Region = customer.Region;
-
-            await _databaseContext.SaveChangesAsync();
-
-            return Ok(dbCustomer);
+            return Ok(result);            
         }
 
         [HttpPost]
         public async Task<ActionResult<Customer>> AddCustomerAsync(Customer newCustomer)
         {
-            _databaseContext.Add(newCustomer);
-            await _databaseContext.SaveChangesAsync();
-
-            return Ok(newCustomer);
+            return Ok(await _customerService.Create(newCustomer));
         }       
     }
 }
