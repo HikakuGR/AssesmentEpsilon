@@ -28,7 +28,7 @@
 <Paginator State="@pagination"></Paginator>
 
 @code {
-    QuickGrid<Customer> myGrid;
+    QuickGrid<Customer>? myGrid;
     PaginationState pagination = new() { ItemsPerPage=10 };
     Customer  customer = new();
     List<Customer> Customers = new();
@@ -36,7 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        customersProvider = async req =>
+         customersProvider = async req => 
         {            
             var response = await httpClient.GetFromJsonAsync<CustomerResponse>($"api/customer/{req.StartIndex}/{req.Count}");
             return GridItemsProviderResult.From(items: response.Customers, totalItemCount: response.Count);
