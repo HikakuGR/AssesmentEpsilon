@@ -1,7 +1,7 @@
 ﻿@page "/edit-customer"
 @page "/edit-customer/{id:guid}"
 @inject HttpClient httpClient
-
+@inject NavigationManager NavigationManager
 @if (Id == null)
 {
     <h3>Create Customer </h3>
@@ -58,7 +58,7 @@ else
     [Parameter]
     public Guid? Id { get; set; }
     public Customer customer { get; set; } = new Customer();
-
+    
     protected override async Task OnParametersSetAsync()
     {
         if (Id is not null)
@@ -74,14 +74,13 @@ else
         if (Id is not null)
         {//Update
             var result = await httpClient.PutAsJsonAsync($"api/customer/{Id}", customer);
-            customer = await result.Content.ReadFromJsonAsync<Customer>();
-            //todo:We can redirect here.
+            customer = await result.Content.ReadFromJsonAsync<Customer>();            
         }
         else
         {//Create
             var result = await httpClient.PostAsJsonAsync($"api/customer", customer);
             customer = await result.Content.ReadFromJsonAsync<Customer>();
         }
-
+        NavigationManager.NavigateTo("/");
     }
 }

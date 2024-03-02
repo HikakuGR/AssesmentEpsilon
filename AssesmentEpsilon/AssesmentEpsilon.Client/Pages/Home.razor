@@ -8,7 +8,7 @@
 
 <h1>Customers</h1>
 
-<QuickGrid ItemsProvider="customersProvider"  Pagination="pagination">
+<QuickGrid ItemsProvider="customersProvider" Pagination="pagination" @ref="myGrid">
     <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
     <PropertyColumn Property="c=>c.ContactName" ></PropertyColumn>
     <PropertyColumn Property="c=>c.City" ></PropertyColumn>
@@ -28,11 +28,12 @@
 <Paginator State="@pagination"></Paginator>
 
 @code {
-
+    QuickGrid<Customer> myGrid;
     PaginationState pagination = new() { ItemsPerPage=10 };
     Customer  customer = new();
     List<Customer> Customers = new();
     GridItemsProvider<Customer>? customersProvider;
+
     protected override async Task OnInitializedAsync()
     {
         customersProvider = async req =>
@@ -57,9 +58,10 @@
 
     async Task DeleteCustomer(Guid id)
     {
-        await httpClient.DeleteAsync($"api/customer/{id}");  
-        NavigationManager.NavigateTo($"/");
+        await httpClient.DeleteAsync($"api/customer/{id}");
+        await myGrid.RefreshDataAsync();
+        //NavigationManager.Refresh(true);
     }
-
+   
 
 }
