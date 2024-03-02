@@ -16,12 +16,7 @@
     private Employee employee=new();
     private Manager manager=new ();
     private string? name { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-
-
-    }
+    
     void ShowName(IPerson personName)
     {
         name = personName.Name;
