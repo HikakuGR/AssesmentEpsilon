@@ -20,7 +20,7 @@ namespace AssesmentEpsilon.Services
 
         public async Task<Customer> Get(Guid id)
         {
-            var result = await _databaseContext.Customers.FindAsync(id);
+            Customer? result = await _databaseContext.Customers.FindAsync(id);
             return result;
         }
 
