@@ -25,7 +25,7 @@ namespace AssesmentEpsilon.Services
         }
 
 
-        public async Task<ActionResult<CustomerResponse>> GetPaged(int skip, int take)
+        public async Task<CustomerResponse> GetPaged(int skip, int take)
         {
             var count = await _databaseContext.Customers.CountAsync();
             var customers = await _databaseContext.Customers!.Skip(skip).Take(take).ToListAsync();

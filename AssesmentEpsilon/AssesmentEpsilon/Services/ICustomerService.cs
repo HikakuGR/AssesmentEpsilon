@@ -8,7 +8,7 @@ namespace AssesmentEpsilon.Services
         Task<Customer> Create(Customer newCustomer);
         Task<Customer> Get(Guid id);
         Task<List<Customer>> GetAll();
-        Task<ActionResult<CustomerResponse>> GetPaged(int skip, int take);
+        Task<CustomerResponse> GetPaged(int skip, int take);
         Task Remove(Guid id);
         Task<ActionResult<Customer>> Update(Guid id, Customer customer);
     }
