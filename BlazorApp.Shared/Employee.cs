@@ -8,7 +8,7 @@ namespace BlazorApp.Shared
 {
     public class Employee : IPerson
     {
-        public string? Name { get; set; } = "EmployeeName";
+        public string Name { get; set; } = "EmployeeName";
     }
 }
 
