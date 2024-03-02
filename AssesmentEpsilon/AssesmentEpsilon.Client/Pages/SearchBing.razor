@@ -1,0 +1,11 @@
+﻿@page "/SearchBing"
+
+<InputText id="Input" @bind-Value=@myInput class="form-control"></InputText>
+<BingComponent bingInputParameter="@myInput"></BingComponent>
+
+@code {
+    
+    public int CurrentCounterValue { get; set; }
+    public string? myInput { get; set; }
+
+}
