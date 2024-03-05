@@ -13,9 +13,16 @@ namespace AssesmentEpsilon.Services
         {
             _databaseContext = databaseContext;
         }
-        public async Task<List<Customer>> GetAll()
+        public async Task<List<Customer>> GetAllAsync()
         {
-            return await _databaseContext.Customers.ToListAsync();
+            var query = from b in _databaseContext.Customers                        
+                        select b;
+            return await query.ToListAsync();
+            //return await _databaseContext.Customers.;
+        }
+        public  List<Customer> GetAll()
+        {
+            return  _databaseContext.Customers.ToList();
         }
 
         public async Task<Customer> Get(Guid id)
@@ -33,10 +40,16 @@ namespace AssesmentEpsilon.Services
 
         }
 
-        public async Task<Customer> Create(Customer newCustomer)
+        public async Task<Customer> CreateAsync(Customer newCustomer)
         {
             _databaseContext.Add(newCustomer);
             await _databaseContext.SaveChangesAsync();
+            return newCustomer;
+        }
+        public Customer Create(Customer newCustomer)
+        {
+            _databaseContext.Customers.Add(newCustomer);
+            _databaseContext.SaveChanges();
             return newCustomer;
         }
 
@@ -67,6 +80,12 @@ namespace AssesmentEpsilon.Services
             if (result != null)
                 _databaseContext.Remove(result);
             await _databaseContext.SaveChangesAsync();
+        }
+
+        public int GetCustomerCount()
+        {
+            var a = _databaseContext.Customers.Count();
+            return a;
         }
     }
 }

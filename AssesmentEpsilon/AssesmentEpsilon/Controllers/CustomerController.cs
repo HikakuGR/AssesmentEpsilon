@@ -17,7 +17,7 @@ namespace AssesmentEpsilon.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Customer>>> Get() => await _customerService.GetAll();
+        public async Task<ActionResult<List<Customer>>> Get() => await _customerService.GetAllAsync();
 
 
         [HttpGet("{skip}/{take}")]
@@ -55,7 +55,7 @@ namespace AssesmentEpsilon.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> AddCustomerAsync(Customer newCustomer)
         {
-            return Ok(await _customerService.Create(newCustomer));
+            return Ok(await _customerService.CreateAsync(newCustomer));
         }       
     }
 }
