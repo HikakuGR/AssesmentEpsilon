@@ -1,10 +1,12 @@
 ﻿using AssesmentEpsilon.Services;
 using BlazorApp.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssesmentEpsilon.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : Controller
@@ -14,6 +16,11 @@ namespace AssesmentEpsilon.Controllers
         public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
+        }
+        [HttpGet("Login")]
+        public IActionResult Login()
+        {
+            return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
         }
 
         [HttpGet]

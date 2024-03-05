@@ -3,6 +3,8 @@ using AssesmentEpsilon.Client.Pages;
 using AssesmentEpsilon.Components;
 using AssesmentEpsilon.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,21 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DatabaseContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+builder.Services.AddIdentityServer()
+        .AddDeveloperSigningCredential()        //This is for dev only scenarios when you don’t have a certificate to use.
+        .AddInMemoryApiScopes(Config.ApiScopes)
+        .AddInMemoryClients(Config.Clients);
+builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://localhost:6001";
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
 
 var app = builder.Build();
 
@@ -33,10 +50,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+
 app.MapRazorComponents<App>()
     //.AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(AssesmentEpsilon.Client._Imports).Assembly);
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseIdentityServer();
 
 app.MapControllers();
 
