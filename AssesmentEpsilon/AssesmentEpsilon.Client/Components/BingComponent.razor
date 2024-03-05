@@ -1,21 +1,48 @@
-﻿@inject HttpClient httpClient
-<div>    
-    <button @onclick=SearchBing class="btn btn-primary">Search Bing</button>
-    <h3>BingAutoSuggest:</h3>
-    @response
+﻿@using BlazorApp.Shared
+@inject HttpClient httpClient
 
+<button @onclick=SearchBing class="btn btn-primary" disabled="@(String.IsNullOrWhiteSpace(bingInputParameter))">Search Bing</button>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            
+        </div>
+    </div>
+
+
+    @if (result != null)
+    {
+        @foreach (var resourceSet in result.resourceSets)
+        {
+
+            @foreach (var resource in resourceSet.resources)
+            {
+                @foreach (var value in resource.value)
+                {
+                    <div class="row">
+                        <div class="col-sm">
+                            <label>Business Name: @value?.name</label>
+                        </div>
+                        <div class="col-sm">
+                            <label>Adress: @value?.address?.addressLine</label>
+                        </div>
+                    </div>
+                    <hr />
+                }
+
+            }
+        }
+    }
 </div>
-
 @code {
     [Parameter]
     public string? bingInputParameter { get; set; }
 
-    public string? response { get; set; }
-    
+    public BingResponse? result { get; set; }
+
     async Task SearchBing()
     {
-        var result = await httpClient.GetAsync($"https://dev.virtualearth.net/REST/v1/Autosuggest?query={bingInputParameter}&userLocation=40.629269,22.947412,5&includeEntityTypes=Business&key=AvfSq16aQ89oaTYEHQxPlShheEVgpFGuSeTpz2xYKQScHMb8Xvn4aba0Wr8bUFWl");
-          response= await result.Content.ReadAsStringAsync();
+        result = await httpClient.GetFromJsonAsync<BingResponse>($"api/bing?input={bingInputParameter}");
     }
-   
+
 }

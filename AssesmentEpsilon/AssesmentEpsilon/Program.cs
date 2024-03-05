@@ -13,7 +13,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DatabaseContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
-
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddIdentityServer()

@@ -1,6 +1,7 @@
 ﻿@page "/SearchBing"
+<h3>BingAutoSuggest Local Business in Thessaloniki:</h3>
 
-<InputText id="Input" @bind-Value=@myInput class="form-control"></InputText>
+<input id="Input" @bind=@myInput @bind:event="oninput"  class="form-control"></input>
 <BingComponent bingInputParameter="@myInput"></BingComponent>
 
 @code {
