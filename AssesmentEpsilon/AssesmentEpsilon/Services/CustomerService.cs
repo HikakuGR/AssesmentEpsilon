@@ -20,11 +20,7 @@ namespace AssesmentEpsilon.Services
             return await query.ToListAsync();
             //return await _databaseContext.Customers.;
         }
-        public  List<Customer> GetAll()
-        {
-            return  _databaseContext.Customers.ToList();
-        }
-
+        
         public async Task<Customer> Get(Guid id)
         {
             Customer? result = await _databaseContext.Customers.FindAsync(id);
@@ -42,17 +38,10 @@ namespace AssesmentEpsilon.Services
 
         public async Task<Customer> CreateAsync(Customer newCustomer)
         {
-            _databaseContext.Add(newCustomer);
+            await _databaseContext.AddAsync(newCustomer);
             await _databaseContext.SaveChangesAsync();
             return newCustomer;
-        }
-        public Customer Create(Customer newCustomer)
-        {
-            _databaseContext.Customers.Add(newCustomer);
-            _databaseContext.SaveChanges();
-            return newCustomer;
-        }
-
+        }        
         public async Task<ActionResult<Customer>> Update(Guid id, Customer customer)
         {
 

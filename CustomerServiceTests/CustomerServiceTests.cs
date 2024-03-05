@@ -13,14 +13,13 @@ namespace CustomerServiceTests
        
 
         [TestMethod]
-        public void CreateCustomer_saves_a_customer_via_context()
+        public async Task CreateCustomer_saves_a_customer_via_context()
         {
             var mockSet = new Mock<DbSet<Customer>>();
             var mockContext = new Mock<DatabaseContext>();
             mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
-            var customerService = new CustomerService(mockContext.Object); 
-
-            customerService.Create(new Customer
+            var customerService = new CustomerService(mockContext.Object);
+            Customer customer = new()
             {
                 ContactName = "customer",
                 Phone = "4343",
@@ -30,10 +29,12 @@ namespace CustomerServiceTests
                 Country = "Country",
                 PostalCode = "PostalCode",
                 Region = "Region"
-            });
+            };
 
-            mockSet.Verify(m => m.Add(It.IsAny<Customer>()), Times.Once());
-            mockContext.Verify(m => m.SaveChanges(), Times.Once());
+            await customerService.CreateAsync(customer);
+
+            mockContext.Verify(m => m.AddAsync(customer,default), Times.Once());
+            mockContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]        
