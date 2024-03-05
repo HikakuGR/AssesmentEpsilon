@@ -1,46 +1,50 @@
 ﻿@page "/"
 @using BlazorApp.Shared
+@using IdentityModel.Client
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject HttpClient httpClient
 @inject NavigationManager NavigationManager
-@* @inject ICustomerService customerService *@
+
+
+
+
 <PageTitle>Home</PageTitle>
 
 <h1>Customers</h1>
 
 <QuickGrid ItemsProvider="customersProvider" Pagination="pagination" @ref="myGrid">
     <PropertyColumn Property="c=>c.Id" Title="Customer ID"></PropertyColumn>
-    <PropertyColumn Property="c=>c.ContactName" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.City" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.PostalCode" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.Address" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.CompanyName" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.Country" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.Phone" ></PropertyColumn>
-    <PropertyColumn Property="c=>c.Region" ></PropertyColumn>
-    <TemplateColumn Title="Action">        
+    <PropertyColumn Property="c=>c.ContactName"></PropertyColumn>
+    <PropertyColumn Property="c=>c.City"></PropertyColumn>
+    <PropertyColumn Property="c=>c.PostalCode"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Address"></PropertyColumn>
+    <PropertyColumn Property="c=>c.CompanyName"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Country"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Phone"></PropertyColumn>
+    <PropertyColumn Property="c=>c.Region"></PropertyColumn>
+    <TemplateColumn Title="Action">
         <button class="btn btn-primary" @onclick=@(()=>EditCustomer(context.Id))>Edit</button>
-        <button class="btn btn-danger" @onclick=@(()=>DeleteCustomer(context.Id))>Delete</button>        
+        <button class="btn btn-danger" @onclick=@(()=>DeleteCustomer(context.Id))>Delete</button>
     </TemplateColumn>
-    
+
 </QuickGrid>
 <button class="btn btn-primary" @onclick="AddCustomer">Add new Customer</button>
 <Paginator State="@pagination"></Paginator>
 
 @code {
     QuickGrid<Customer>? myGrid;
-    PaginationState pagination = new() { ItemsPerPage=10 };
-    Customer  customer = new();
+    PaginationState pagination = new() { ItemsPerPage = 10 };
+    Customer customer = new();
     List<Customer> Customers = new();
     GridItemsProvider<Customer>? customersProvider;
 
     protected override async Task OnInitializedAsync()
     {
-         customersProvider = async req => 
-        {            
-            var response = await httpClient.GetFromJsonAsync<CustomerResponse>($"api/customer/{req.StartIndex}/{req.Count}");
-            return GridItemsProviderResult.From(items: response.Customers, totalItemCount: response.Count);
-        };
+        customersProvider = async req =>
+      {          
+          var response = await httpClient.GetFromJsonAsync<CustomerResponse>($"api/customer/{req.StartIndex}/{req.Count}");          
+          return GridItemsProviderResult.From(items: response.Customers, totalItemCount: response.Count);
+      };
         // var result = await httpClient.GetAsync("api/customer");
         // var response = await result.Content.ReadFromJsonAsync<List<Customer>>();
         // Customers = response!;
@@ -53,7 +57,7 @@
     async Task AddCustomer()
     {
         NavigationManager.NavigateTo("edit-customer");
-        var response = await httpClient.PostAsJsonAsync<Customer>("api/customer/create",customer);
+        var response = await httpClient.PostAsJsonAsync<Customer>("api/customer/create", customer);
     }
 
     async Task DeleteCustomer(Guid id)
@@ -62,6 +66,6 @@
         await myGrid.RefreshDataAsync();
         //NavigationManager.Refresh(true);
     }
-   
+
 
 }
