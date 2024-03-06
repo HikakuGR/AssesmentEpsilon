@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Shared
-{
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+{    
     public class Address
     {
         public string countryRegion { get; set; }

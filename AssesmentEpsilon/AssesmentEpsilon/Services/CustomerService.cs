@@ -15,12 +15,9 @@ namespace AssesmentEpsilon.Services
         }
         public async Task<List<Customer>> GetAllAsync()
         {
-            var query = from b in _databaseContext.Customers                        
-                        select b;
-            return await query.ToListAsync();
-            //return await _databaseContext.Customers.;
+            return await _databaseContext.Customers.ToListAsync();
         }
-        
+       
         public async Task<Customer> Get(Guid id)
         {
             Customer? result = await _databaseContext.Customers.FindAsync(id);
@@ -67,7 +64,7 @@ namespace AssesmentEpsilon.Services
         {
             var result = await _databaseContext.Customers.FindAsync(id);
             if (result != null)
-                _databaseContext.Remove<Customer>(result);
+                _databaseContext.Remove(result);
             await _databaseContext.SaveChangesAsync();
         }
         
