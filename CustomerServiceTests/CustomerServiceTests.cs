@@ -20,8 +20,10 @@ namespace CustomerServiceTests
             var mockContext = new Mock<DatabaseContext>();
             mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
             var customerService = new CustomerService(mockContext.Object);
+            Guid guid = Guid.NewGuid();
             Customer customer = new()
             {
+                Id=guid,
                 ContactName = "customer",
                 Phone = "4343",
                 Address = "Address",
@@ -36,6 +38,14 @@ namespace CustomerServiceTests
 
             mockContext.Verify(m => m.AddAsync(customer,default), Times.Once());
             mockContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+
+            mockSet.Setup(p => p.FindAsync(It.IsAny<Guid>())).ReturnsAsync(customer);
+            var result = await customerService.Get(guid);
+            Assert.AreEqual(customer,result);
+            mockContext.Verify(m => m.FindAsync<Customer>(guid,default), Times.Once());
+
+        await customerService.Remove(guid);
+            mockContext.Verify(m => m.Remove<Customer>(customer), Times.Once());
         }
 
         //[TestMethod]        

@@ -67,7 +67,7 @@ namespace AssesmentEpsilon.Services
         {
             var result = await _databaseContext.Customers.FindAsync(id);
             if (result != null)
-                _databaseContext.Remove(result);
+                _databaseContext.Remove<Customer>(result);
             await _databaseContext.SaveChangesAsync();
         }
         
