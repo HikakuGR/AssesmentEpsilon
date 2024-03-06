@@ -5,33 +5,42 @@
 <div class="container">
     <div class="row">
         <div class="col-sm">
-            
         </div>
     </div>
 
 
     @if (result != null)
     {
-        @foreach (var resourceSet in result.resourceSets)
-        {
-
-            @foreach (var resource in resourceSet.resources)
-            {
-                @foreach (var value in resource.value)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Business Name</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var resourceSet in result.resourceSets)
                 {
-                    <div class="row">
-                        <div class="col-sm">
-                            <label>Business Name: @value?.name</label>
-                        </div>
-                        <div class="col-sm">
-                            <label>Adress: @value?.address?.addressLine</label>
-                        </div>
-                    </div>
-                    <hr />
-                }
+                    @foreach (var resource in resourceSet.resources)
+                    {
+                        @foreach (var value in resource.value)
+                        {
+                            <tr>
+                                <td>
+                                    <label> @value?.name</label>
+                                </td>
+                                <td>
+                                    <label> @value?.address?.addressLine</label>
+                                </td>
 
-            }
-        }
+                            </tr>
+                        }
+
+                    }
+                }
+            </tbody>
+        </table>
+        
     }
 </div>
 @code {
