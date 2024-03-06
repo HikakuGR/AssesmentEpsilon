@@ -70,11 +70,6 @@ namespace AssesmentEpsilon.Services
                 _databaseContext.Remove(result);
             await _databaseContext.SaveChangesAsync();
         }
-
-        public int GetCustomerCount()
-        {
-            var a = _databaseContext.Customers.Count();
-            return a;
-        }
+        
     }
 }

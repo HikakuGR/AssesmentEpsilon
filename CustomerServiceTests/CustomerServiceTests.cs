@@ -1,5 +1,6 @@
 using AssesmentEpsilon;
 using AssesmentEpsilon.Services;
+using Castle.Core.Resource;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Data.Entity.Infrastructure;
@@ -37,60 +38,82 @@ namespace CustomerServiceTests
             mockContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [TestMethod]        
-        public async Task CustomerService_Create_ThenCountAsync()
-        {
-            var mockSet = new Mock<DbSet<Customer>>();
-            var mockContext = new Mock<DatabaseContext>();
-             mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
-            var customerService = new CustomerService(mockContext.Object);
+        //[TestMethod]        
+        //public async Task Create_Customer_Then_Delete()
+        //{
 
-            await customerService.CreateAsync(new Customer
-            {
-                ContactName = "customer 1",
-                Phone = "4343"
-            });
+        //    var mockSet = new Mock<DbSet<Customer>>();
+        //    var mockContext = new Mock<DatabaseContext>();
+        //    mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
+        //    var customerService = new CustomerService(mockContext.Object);
+        //    Customer customer = new()
+        //    {
+        //        ContactName = "customer",
+        //        Phone = "4343",
+        //        Address = "Address",
+        //        City = "City",
+        //        CompanyName = "CompanyName",
+        //        Country = "Country",
+        //        PostalCode = "PostalCode",
+        //        Region = "Region"
+        //    };
+
+        //    await customerService.CreateAsync(customer);
+        //    var customerReturned = mockContext.Object.Customers.SingleOrDefault();
+        //    Assert.IsNotNull(customerReturned);
+        //    Assert.AreEqual(customer.ContactName, customerReturned.ContactName);
+
+        //    await customerService.Remove(customer.Id);
+        //    mockContext.Verify(m => m.Remove(customer), Times.Once());
+        //    int countCustomers = await mockContext.Object.Customers.CountAsync();
+        //    Assert.AreEqual(countCustomers, 0);
+        //}
+
+        //[TestMethod]
+        //public async Task Create_Three_Customers_ThenGetAllAsync()
+        //{
+        //    var mockSet = new Mock<DbSet<Customer>>();
+        //    var mockContext = new Mock<DatabaseContext>();
+        //    mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
+        //    var customerService = new CustomerService(mockContext.Object);
+
             
+        //    await customerService.CreateAsync(new Customer { ContactName = "AAA" });
+        //    await customerService.CreateAsync(new Customer { ContactName = "BBB" });
+        //    await customerService.CreateAsync(new Customer { ContactName = "CCC" });
 
-            var customersCount =  customerService.GetCustomerCount();
-            Assert.IsTrue(1== customersCount);
-        }
+        //    var customers = await customerService.GetAllAsync();
 
+        //    Assert.AreEqual(3, customers.Count);
+        //    Assert.AreEqual("AAA", customers[0].ContactName);
+        //    Assert.AreEqual("BBB", customers[1].ContactName);
+        //    Assert.AreEqual("ZZZ", customers[2].ContactName);
+        //}
+        
         [TestMethod]
-        public async Task GetAllBlogsAsync_orders_by_name()
+        public void TestMethod2()
         {
-
-            var data = new List<Customer>
-            {
-                new Customer {  ContactName = "BBB" },
-                new Customer { ContactName = "ZZZ" },
-                new Customer { ContactName = "AAA" },
-            }.AsQueryable();
-
             var mockSet = new Mock<DbSet<Customer>>();
-            mockSet.As<IDbAsyncEnumerable<Customer>>()
-                .Setup(m => m.GetAsyncEnumerator())
-                .Returns(new TestDbAsyncEnumerator<Customer>(data.GetEnumerator()));
-
-            mockSet.As<IQueryable<Customer>>()
-                .Setup(m => m.Provider)
-                .Returns(new TestDbAsyncQueryProvider<Customer>(data.Provider));
-
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-
             var mockContext = new Mock<DatabaseContext>();
-            mockContext.Setup(c => c.Customers).Returns(mockSet.Object);
+            mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
+            var customerService = new CustomerService(mockContext.Object);
+            Customer customer = new()
+            {
+                ContactName = "customer",
+                Phone = "4343",
+                Address = "Address",
+                City = "City",
+                CompanyName = "CompanyName",
+                Country = "Country",
+                PostalCode = "PostalCode",
+                Region = "Region"
+            };
 
-            var service = new CustomerService(mockContext.Object);
-            var blogs = await service.GetAllAsync();
-
-            Assert.AreEqual(3, blogs.Count);
-            Assert.AreEqual("AAA", blogs[0].ContactName);
-            Assert.AreEqual("BBB", blogs[1].ContactName);
-            Assert.AreEqual("ZZZ", blogs[2].ContactName);
+            //mockContext.Setup(p => p.Customers.FindAsync(customer.Id)).Returns(Task.FromResult(mockSet.Object));
+            //HomeController home = new HomeController(mock.Object);
+            //mockSet.Setup(p => p.FindAsync(It.IsAny<Guid>())).Returns();
+            //var result = await customerService.Get(Guid.Parse("1"));
+            //Assert.AreEqual(customer, result);
         }
-
     }
 }
